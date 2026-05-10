@@ -1,6 +1,0 @@
-target,model,ROC_AUC_mean,ROC_AUC_std,PR_AUC_mean,PR_AUC_std,Recall@90%Prec_mean,Recall@90%Prec_std,Brier_mean,Brier_std,CalibSlope_mean,CalibSlope_std,fit_seconds_mean,fit_seconds_std
-htn_now_norisk,CatBoost,0.9277,0.0114,0.8178,0.044,0.6209,0.0814,0.0589,0.0068,0.7283,0.0886,1.8,0.3235
-htn_now_norisk,LightGBM,0.9148,0.0152,0.7723,0.0451,0.4623,0.084,0.0661,0.0111,0.279,0.0337,0.98,0.1306
-htn_now_norisk,LogisticRegression,0.9358,0.0123,0.8532,0.035,0.7184,0.0719,0.0843,0.0031,1.2796,0.1823,0.144,0.2446
-htn_now_norisk,RandomForest,0.927,0.0081,0.7997,0.0183,0.5321,0.0919,0.061,0.0032,1.3481,0.0782,3.696,0.7614
-htn_now_norisk,XGBoost,0.9246,0.0112,0.8099,0.0419,0.5933,0.0794,0.0583,0.0081,0.6435,0.0852,0.408,0.3132

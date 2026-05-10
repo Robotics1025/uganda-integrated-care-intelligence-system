@@ -1,4 +1,0 @@
-model,ROC_AUC_mean,ROC_AUC_std,PR_AUC_mean,PR_AUC_std,Brier_mean,Brier_std,Recall@90Prec_mean,Recall@90Prec_std
-LogReg,0.9358,0.0123,0.8532,0.035,0.0843,0.0031,0.7184,0.0719
-RandomForest,0.927,0.0081,0.7997,0.0183,0.061,0.0032,0.5321,0.0919
-LightGBM,0.9166,0.014,0.7746,0.0461,0.066,0.0111,0.4567,0.0797

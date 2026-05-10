@@ -1,9 +1,0 @@
-scheme,rate,added_missing,path
-mcar,0.1,1791,data/processed/sim/mcar_10.parquet
-mnar,0.1,1224,data/processed/sim/mnar_10.parquet
-mcar,0.2,3717,data/processed/sim/mcar_20.parquet
-mnar,0.2,2466,data/processed/sim/mnar_20.parquet
-mcar,0.3,5576,data/processed/sim/mcar_30.parquet
-mnar,0.3,3660,data/processed/sim/mnar_30.parquet
-mcar,0.4,7414,data/processed/sim/mcar_40.parquet
-mnar,0.4,4854,data/processed/sim/mnar_40.parquet

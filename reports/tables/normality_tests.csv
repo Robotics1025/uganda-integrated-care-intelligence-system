@@ -1,3 +1,0 @@
-feature,n,shapiro_W,shapiro_p,dagostino_K2,dagostino_p,skew,kurtosis,reject_normality
-bp_systolic,2644,0.9475,9.424755390605945e-30,590.6399,5.548404858634554e-129,1.112,3.521,True
-bp_diastolic,2644,0.9824,1.320714817440996e-17,171.7498,5.069887010350754e-38,0.543,1.053,True
