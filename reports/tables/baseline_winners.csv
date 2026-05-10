@@ -1,0 +1,4 @@
+target,model,ROC_AUC_mean,ROC_AUC_std,PR_AUC_mean,Brier_mean,CalibSlope_mean
+htn_now,LightGBM,0.9663,0.012,0.9238,0.0247,0.3101
+htn_stage>=1,CatBoost,1.0,0.0,1.0,0.0,1.6783
+treat,RandomForest,0.8688,0.0386,0.1533,0.0151,0.7035

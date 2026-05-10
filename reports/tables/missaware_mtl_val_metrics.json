@@ -1,0 +1,8 @@
+{
+  "val_roc_auc_htn_now": 0.9244142101284959,
+  "val_pr_auc_htn_now": 0.8771160931007979,
+  "val_brier_htn_now": 0.04634404600477119,
+  "mc_dropout_T": 30,
+  "uncertainty_htn_prob_std_mean": 0.05039728805422783,
+  "uncertainty_htn_prob_std_p95": 0.15123918652534485
+}

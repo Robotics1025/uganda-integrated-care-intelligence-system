@@ -152,16 +152,16 @@ UGICIS would instead output:
 
 ## Scenario 2 — Incorrect Referral
 
-A patient with elevated blood pressure is referred directly to Mulago despite nearby district-level treatment availability.
+A patient with elevated blood pressure is referred directly to Mulago despite a Health Center 4 (HC4) facility being able to manage Stage 2 disease.
 
-UGICIS instead evaluates:
+UGICIS routing in v1 uses a **deterministic stage -> route rule** (see Section 14):
 
-* severity
-* nearest capable facility
-* facility level
-* referral necessity
+* `Stage 0` -> self_manage
+* `Stage 1` -> treat_at_facility
+* `Stage 2` -> treat_at_facility (if `hc4 == 1`) else refer_district
+* `Stage 3` -> refer_tertiary
 
-The system routes the patient to the nearest suitable treatment centre.
+`hc4` here means **Health Center 4 level facility (1 = yes, 0 = no)** as defined by the Dryad data dictionary. **Geographic "nearest facility" logic is out of scope for v1** because the dataset has no GPS coordinates, no inter-facility distances, and no transport-time fields.
 
 ---
 
@@ -206,9 +206,26 @@ To design, implement, validate, and explain a Missingness-Aware Multi-Task Clini
 
 7. Evaluate uncertainty estimation via Monte Carlo Dropout.
 
-8. Develop intelligent clinical routing logic.
+8. Develop a **deterministic clinical routing rule** (stage + facility level) — see Section 14.
 
 9. Produce an offline-deployable AI-ready model architecture.
+
+## Scope statement (what this project does NOT claim)
+
+* **No HIV deterioration / viral-load forecasting.** The Dryad dataset has no longitudinal viral load, CD4 count, or follow-up outcome fields. UGICIS is scoped to **hypertension presence / severity / treatment urgency / routing** in PLHIV populations — not HIV progression modelling.
+* **No geographic routing.** See Scenario 2 above. v1 uses facility-level (`hc4`) escalation only.
+* **No CD4 measurements.** `hc4` is a *facility* indicator (Health Center 4 level, 0/1), not a CD4 category. The dataset has no immunological lab values.
+
+## Two-track prediction protocol (leakage discipline)
+
+Because `htn_stage` is **defined in the Dryad dictionary as ranges of BP measurements** (Grade 1 = 140-159/90-99 mmHg, etc.) and `htn_now` includes `new_dx` (set from BP at the visit), every BP-derived feature is **target leakage by construction**. The notebook therefore separates evaluation into two scientifically distinct tracks:
+
+| Track | Inputs | What it answers |
+|---|---|---|
+| **A. Diagnostic / Triage** (Notebook §7-11) | All features incl. BP, BP splines, BP-derived clusters, target-encoded columns | "Given today's BP, which severity bucket is the patient in?" Effectively a calculator / screening rule. |
+| **B. Early Risk** (Notebook §15) | **No BP-derived features, no target-encoded columns, no patient/facility IDs** | "Without measuring BP, how likely is this patient to be hypertensive based on demographics, ART years, lifestyle, and facility level?" The honest prediction task. |
+
+Honest 5-fold CV for `htn_now`: ROC-AUC **0.93-0.94** on Track B (vs 0.97 on Track A). The 3-5 pp gap is the explicit value of BP-derived information. Track B is the headline scientific result; Track A is reported as a screening reference.
 
 ---
 
@@ -245,23 +262,23 @@ Unlike generic Kaggle datasets, this dataset has strong ecological validity.
 
 # 6. Dataset Features
 
-| Feature        | Description                      |
-| -------------- | -------------------------------- |
-| age_category   | Patient age group                |
-| female         | Gender indicator                 |
-| artyr          | Years on ART                     |
-| alcohol        | Alcohol use                      |
-| smoke          | Smoking status                   |
-| overweight     | BMI / overweight status          |
-| exercise       | Physical activity level          |
-| marital_status | Marital status                   |
-| bpmdate6mo     | Blood pressure measured recently |
-| htn_now        | Current hypertension status      |
-| htn_stage      | Hypertension severity stage      |
-| treat          | Urgent treatment required        |
-| hc_code        | Health centre identifier         |
-| hc4            | Health centre level              |
-| bpfinal        | Final blood pressure reading     |
+| Feature        | Type / Codes                                              | Notes |
+| -------------- | --------------------------------------------------------- | ----- |
+| age_category   | 0 = age > 40, 1 = age <= 40                               | |
+| female         | 0 = Male, 1 = Female                                       | |
+| artyr          | 1 = up_to_1y, 2 = 2-5y, 3 = 6-9y, 4 = 10-35y               | grouped years on ART |
+| alcohol        | 1 = Yes, 2 = No (recoded to 0/1 in pipeline)              | |
+| smoke          | 1 = Yes, 2 = No (recoded to 0/1 in pipeline)              | |
+| overweight     | 0 = No, 1 = Yes, -9 = missing                              | |
+| exercise       | 0 = No, 1 = Yes (lack of physical work / exercise)        | |
+| marital_status | 1 = single, 2 = married/cohabiting, 3 = divorced/widowed, -9 = missing | |
+| bpmdate6mo     | 0 = No, 1 = Yes                                            | BP measured in last 6 months at clinic |
+| htn_now        | 0 = No, 1 = Yes                                            | **Target.** Includes `new_dx` -> BP-derived |
+| htn_stage      | 0 = Normal, 1 = Grade 1, 2 = Grade 2, 3 = Grade 3         | **Target.** *Defined from BP* (140/90 thresholds) |
+| treat          | 0 = No, 1 = Yes                                            | On HTN treatment |
+| hc_code        | de-identified integer                                      | Health centre identifier (high-cardinality) |
+| **hc4**        | **0 = No, 1 = Yes**                                        | **"Is clinic a Health Center 4 level facility" — NOT CD4** |
+| bpfinal        | string `Sys/Dia` or `-9/-9`                                | Final BP reading; parsed into `bp_systolic`, `bp_diastolic` |
 
 ---
 
