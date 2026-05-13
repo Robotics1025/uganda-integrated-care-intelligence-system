@@ -6,7 +6,7 @@
 
 # Author Information
 
-**Principal Investigator:** Mugole Joel
+**Principal Investigator/Evaluator/Dataset Relevance/ML/DL Structure:** Mugole Joel/Shadia/Elizabeth/Keith/Allan
 **Academic Programme:** Bachelor of Science in Computer Science (Year 2)
 **Institution:** Makerere University
 **Location:** Kampala, Uganda
