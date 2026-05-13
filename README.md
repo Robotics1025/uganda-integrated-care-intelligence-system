@@ -1,4 +1,4 @@
-# Uganda Integrated Care Intelligence System (UGICIS)
+ # Uganda Integrated Care Intelligence System (UGICIS)
 
 ## A Missingness-Aware Multi-Task Clinical Intelligence System for HIV-Hypertension Risk Prediction and Clinical Pathway Support in Ugandan Healthcare Environments
 
@@ -12,7 +12,7 @@
 **Location:** Kampala, Uganda
 **Research Domain:** Artificial Intelligence for Healthcare / Digital Health / Clinical Machine Learning
 **Project Type:** Research + Deployable Clinical AI System
-**Target Environment:** Ugandan Public Healthcare Facilities
+**Target Environment:** Ugandan Public Healthcare Facilities.
 
 ---
 
